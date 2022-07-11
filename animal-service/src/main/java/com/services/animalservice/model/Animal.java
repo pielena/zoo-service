@@ -26,8 +26,8 @@ public class Animal {
     @Column(name = "id")
     private Long id;
 
-    @Column(name = "username")
-    private String username;
+    @Column(name = "user_id")
+    private Long userId;
 
     @Column(name = "birthday")
     private LocalDate birthday;

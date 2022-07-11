@@ -25,19 +25,21 @@ public class UserServiceImpl implements UserService {
             throw new RegistrationException("User with id: " + username + " already registered");
         }
         String hash = BCrypt.hashpw(userSecret, BCrypt.gensalt());
-        User user = new User(username, hash);
+        User user = new User();
+        user.setUsername(username);
+        user.setHash(hash);
         userRepository.save(user);
     }
 
     @Override
-    public void checkCredentials(String clientId, String clientSecret) {
-        Optional<User> optionalUserEntity = userRepository.findById(clientId);
+    public void checkCredentials(String username, String userSecret) {
+        Optional<User> optionalUserEntity = userRepository.findByUsername(username);
         if (optionalUserEntity.isEmpty())
-            throw new LoginException("Client with id: " + clientId + " not found");
+            throw new LoginException("User with id: " + username + " not found");
 
         User user = optionalUserEntity.get();
 
-        if (!BCrypt.checkpw(clientSecret, user.getHash()))
+        if (!BCrypt.checkpw(userSecret, user.getHash()))
             throw new LoginException("Secret is incorrect");
     }
 }
