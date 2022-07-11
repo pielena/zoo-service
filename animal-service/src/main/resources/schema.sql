@@ -11,18 +11,22 @@ DROP TABLE IF EXISTS zoo.public.users;
 
 CREATE TABLE users
 (
-    username VARCHAR(255) NOT NULL UNIQUE PRIMARY KEY ,
-    hash     VARCHAR(255)
+    id                 SERIAL       NOT NULL PRIMARY KEY,
+    username           VARCHAR(255) NOT NULL,
+    hash               VARCHAR(255) NOT NULL,
+    failed_attempt     SMALLINT  DEFAULT 0,
+    account_non_locked BOOLEAN   DEFAULT TRUE,
+    lock_time          TIMESTAMP DEFAULT null
 );
 
 CREATE TABLE animals
 (
     id       SERIAL NOT NULL PRIMARY KEY,
-    username  VARCHAR(255) NOT NULL,
+    user_id  BIGINT NOT NULL,
     birthday DATE DEFAULT now(),
     type     VARCHAR(25),
     sex      VARCHAR(7),
     name     VARCHAR(50),
 
-    CONSTRAINT animals_users_FK FOREIGN KEY (username) REFERENCES users (username)
+    CONSTRAINT animals_users_FK FOREIGN KEY (user_id) REFERENCES users (id)
 );
