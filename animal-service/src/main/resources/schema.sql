@@ -26,7 +26,7 @@ CREATE TABLE animals
     birthday DATE DEFAULT now(),
     type     VARCHAR(25),
     sex      VARCHAR(7),
-    name     VARCHAR(50),
+    name     VARCHAR(50) UNIQUE,
 
     CONSTRAINT animals_users_FK FOREIGN KEY (user_id) REFERENCES users (id)
 );

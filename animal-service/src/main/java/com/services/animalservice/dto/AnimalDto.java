@@ -12,7 +12,6 @@ import java.time.LocalDate;
 public class AnimalDto {
 
         private Long id;
-        private Long userId;
         private LocalDate birthday;
         private AnimalType animalType;
         private AnimalSex animalSex;
@@ -21,7 +20,6 @@ public class AnimalDto {
         public Animal toAnimal() {
             Animal animal = new Animal();
             animal.setId(id);
-            animal.setUserId(userId);
             animal.setBirthday(birthday);
             animal.setAnimalType(animalType);
             animal.setAnimalSex(animalSex);
@@ -33,7 +31,6 @@ public class AnimalDto {
         public static AnimalDto fromAnimal(Animal animal) {
             AnimalDto animalDto = new AnimalDto();
             animalDto.setId(animal.getId());
-            animalDto.setUserId(animal.getUserId());
             animalDto.setBirthday(animal.getBirthday());
             animalDto.setAnimalType(animal.getAnimalType());
             animalDto.setAnimalSex(animal.getAnimalSex());

@@ -3,7 +3,6 @@ package com.services.animalservice.filter;
 import com.services.animalservice.service.TokenService;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpHeaders;
-import org.springframework.stereotype.Component;
 import org.springframework.web.filter.OncePerRequestFilter;
 
 import javax.servlet.FilterChain;
@@ -12,7 +11,6 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
-@Component
 public class AuthorizationFilter extends OncePerRequestFilter {
 
     private final TokenService tokenService;
@@ -39,6 +37,9 @@ public class AuthorizationFilter extends OncePerRequestFilter {
             response.setStatus(HttpServletResponse.SC_FORBIDDEN);
         }
         else {
+
+//            SecurityContextHolder.getContext().getAuthentication() = authHeader;
+//            SecurityContextHolder.getContext().authentication = auth
             filterChain.doFilter(request, response);
         }
     }

@@ -40,7 +40,7 @@ spring:
             - Path=/animals/**
 
         - id: help
-          uri: https://spring.io/guides
+          uri: https://github.com/pielena/security-crud-gateway/blob/develop/README.md
           predicates:
             - Path=/help
           filters:
