@@ -51,11 +51,11 @@ public class AnimalServiceImpl implements AnimalService {
 
     @Override
     public void delete(Long animalId, Long userId) {
-        try {
-            animalRepository.deleteByUserIdAndAnimalId(animalId, userId);
-        } catch (Exception e) {
-            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Animal with id " + animalId + " doesn't exist");
+        Animal animal = getById(animalId);
+        if (!animal.getId().equals(userId)) {
+            throw new ResponseStatusException(HttpStatus.FORBIDDEN, "It's not your animal, you can't delete it");
         }
+            animalRepository.deleteByUserIdAndAnimalId(animalId, userId);
     }
 
     @Override

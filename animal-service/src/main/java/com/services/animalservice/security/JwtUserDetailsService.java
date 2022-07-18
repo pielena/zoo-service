@@ -30,6 +30,7 @@ public class JwtUserDetailsService implements UserDetailsService {
 
         return org.springframework.security.core.userdetails.User
                 .withUsername(username)
+                .username(user.getUsername())
                 .password(user.getPassword())
                 .authorities(user.getRoles())
                 .accountExpired(false)
