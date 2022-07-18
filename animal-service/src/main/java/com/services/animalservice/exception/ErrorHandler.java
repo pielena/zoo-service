@@ -1,6 +1,5 @@
-package com.services.animalservice.controller;
+package com.services.animalservice.exception;
 
-import com.services.animalservice.exception.ApiError;
 import org.hibernate.exception.ConstraintViolationException;
 import org.springframework.core.Ordered;
 import org.springframework.core.annotation.Order;
