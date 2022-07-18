@@ -23,7 +23,7 @@ CREATE TABLE animals
 (
     id       SERIAL NOT NULL PRIMARY KEY,
     user_id  BIGINT NOT NULL,
-    birthday DATE DEFAULT now(),
+    birthday DATE DEFAULT CURRENT_DATE,
     type     VARCHAR(25),
     sex      VARCHAR(7),
     name     VARCHAR(50) UNIQUE,
