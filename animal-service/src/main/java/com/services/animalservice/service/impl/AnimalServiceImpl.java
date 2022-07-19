@@ -36,7 +36,7 @@ public class AnimalServiceImpl implements AnimalService {
     @Override
     public Animal update(Animal animal, Long userId) {
          Animal result = animalRepository.findById(animal.getId())
-                 .orElseThrow(() -> new ResponseStatusException(HttpStatus.BAD_REQUEST, "Animal with id" + animal.getId() + " doesn't exist"));
+                 .orElseThrow(() -> new ResponseStatusException(HttpStatus.BAD_REQUEST, "Animal with id " + animal.getId() + " doesn't exist"));
          if (result.getUser().getId().equals(userId)) {
              result.setBirthday(animal.getBirthday());
              result.setAnimalType(animal.getAnimalType());
@@ -52,7 +52,7 @@ public class AnimalServiceImpl implements AnimalService {
     @Override
     public void delete(Long animalId, Long userId) {
         Animal animal = getById(animalId);
-        if (!animal.getId().equals(userId)) {
+        if (!animal.getUser().getId().equals(userId)) {
             throw new ResponseStatusException(HttpStatus.FORBIDDEN, "It's not your animal, you can't delete it");
         }
             animalRepository.deleteByUserIdAndAnimalId(animalId, userId);
