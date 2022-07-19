@@ -10,13 +10,14 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
+import java.time.LocalDateTime;
 
 @Entity
 @NoArgsConstructor
 @Getter
 @Setter
-@Table(name = "users")
-public class User {
+@Table(name = "attempts")
+public class Attempt {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -26,6 +27,6 @@ public class User {
     @Column(name = "username")
     private String username;
 
-    @Column(name = "password")
-    private String hash;
+    @Column(name = "creation_date_time")
+    private LocalDateTime creationDateTime;
 }

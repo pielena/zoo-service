@@ -7,6 +7,7 @@ import com.services.authservice.exception.LoginException;
 import com.services.authservice.exception.RegistrationException;
 import com.services.authservice.service.TokenService;
 import com.services.authservice.service.UserService;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -29,7 +30,7 @@ public class AuthController {
     @PostMapping
     public ResponseEntity<String> register(@RequestBody UserDto userDto) {
         userService.register(userDto.getUsername(), userDto.getUserSecret());
-        return ResponseEntity.ok("Registered");
+        return ResponseEntity.ok("Successful registered. Go ahead!");
     }
 
     @PostMapping("/token")
@@ -42,6 +43,6 @@ public class AuthController {
     public ResponseEntity<ErrorResponse> handleUserRegistrationException(RuntimeException ex) {
         return ResponseEntity
                 .badRequest()
-                .body(new ErrorResponse(ex.getMessage()));
+                .body(new ErrorResponse(HttpStatus.BAD_REQUEST, ex.getMessage()));
     }
 }

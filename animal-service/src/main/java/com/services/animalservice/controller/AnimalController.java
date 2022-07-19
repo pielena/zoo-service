@@ -50,25 +50,26 @@ public class AnimalController {
     }
 
     @PostMapping
-    public ResponseEntity<Void> saveAnimal(@RequestBody AnimalDto animalDto) {
+    public ResponseEntity<String> saveAnimal(@RequestBody AnimalDto animalDto) {
         Long userId = 1L;
         Animal animal = animalDto.toAnimal();
         animalService.save(animal, userId);
-        return new ResponseEntity<>(HttpStatus.OK);
+        return new ResponseEntity<>("Animal is saved", HttpStatus.OK);
     }
 
     @PutMapping(value = "/{id}")
-    public ResponseEntity<Void> putAnimalById(@PathVariable Long id, @RequestBody AnimalDto animalDto) {
+    public ResponseEntity<String> putAnimalById(@PathVariable Long id, @RequestBody AnimalDto animalDto) {
         Animal animal = animalDto.toAnimal();
         animal.setId(id);
         Long userId = 1L;
         animalService.update(animal, userId);
-        return new ResponseEntity<>(HttpStatus.OK);
+        return new ResponseEntity<>("Animal is updated", HttpStatus.OK);
     }
 
     @DeleteMapping(value = "/{id}")
-    public void deleteAnimalById(@PathVariable Long id) {
+    public ResponseEntity<String> deleteAnimalById(@PathVariable Long id) {
         Long userId = 1L;
         animalService.delete(id, userId);
+        return new ResponseEntity<>("Animal is deleted", HttpStatus.OK);
     }
 }
