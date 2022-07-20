@@ -23,9 +23,9 @@ public class AnimalServiceImpl implements AnimalService {
     }
 
     @Override
-    public Animal save(Animal animal, Long userId) {
+    public Animal save(Animal animal, String username) {
         if (!animalRepository.existsAnimalByName(animal.getName())) {
-            User user = userService.getUserById(userId);
+            User user = userService.getUserByUsername(username);
             animal.setUser(user);
             return animalRepository.save(animal);
         } else {
@@ -34,10 +34,10 @@ public class AnimalServiceImpl implements AnimalService {
     }
 
     @Override
-    public Animal update(Animal animal, Long userId) {
+    public Animal update(Animal animal, String username) {
          Animal result = animalRepository.findById(animal.getId())
                  .orElseThrow(() -> new ResponseStatusException(HttpStatus.BAD_REQUEST, "Animal with id " + animal.getId() + " doesn't exist"));
-         if (result.getUser().getId().equals(userId)) {
+         if (result.getUser().getUsername().equals(username)) {
              result.setBirthday(animal.getBirthday());
              result.setAnimalType(animal.getAnimalType());
              result.setAnimalSex(animal.getAnimalSex());
@@ -50,11 +50,13 @@ public class AnimalServiceImpl implements AnimalService {
     }
 
     @Override
-    public void delete(Long animalId, Long userId) {
+    public void delete(Long animalId, String username) {
         Animal animal = getById(animalId);
-        if (!animal.getUser().getId().equals(userId)) {
+        if (!animal.getUser().getUsername().equals(username)) {
             throw new ResponseStatusException(HttpStatus.FORBIDDEN, "It's not your animal, you can't delete it");
         }
+        User user = userService.getUserByUsername(username);
+        Long userId = user.getId();
             animalRepository.deleteByUserIdAndAnimalId(animalId, userId);
     }
 
@@ -65,7 +67,9 @@ public class AnimalServiceImpl implements AnimalService {
     }
 
     @Override
-    public List<Animal> getAllByUserId(Long userId) {
+    public List<Animal> getAllByUsername(String username) {
+        User user = userService.getUserByUsername(username);
+        Long userId = user.getId();
         return animalRepository.findAnimalByUser(userId);
     }
 }

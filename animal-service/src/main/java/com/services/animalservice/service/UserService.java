@@ -7,4 +7,8 @@ public interface UserService {
 //    Long getIdByUsername(String userName);
 
     User getUserById(Long id);
+
+    public Long getIdByUsername(String userName);
+
+    User getUserByUsername(String username);
 }

@@ -14,7 +14,6 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
 import javax.persistence.Transient;
-import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -35,17 +34,8 @@ public class User {
     private String username;
 
     @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
-    @Column(name = "hash")
+    @Column(name = "password")
     private String password;
-
-    @Column(name = "failed_attempt")
-    private int failedAttempt;
-
-    @Column(name = "account_non_locked")
-    private boolean accountNonLocked;
-
-    @Column(name = "lock_time")
-    private LocalDateTime lockTime;
 
     @JsonIgnore
     @Transient

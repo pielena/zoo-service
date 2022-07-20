@@ -6,13 +6,13 @@ import java.util.List;
 
 public interface AnimalService {
 
-    Animal save(Animal animal, Long userId);
+    Animal save(Animal animal, String username);
 
-    Animal update(Animal animal, Long userId);
+    Animal update(Animal animal, String username);
 
-    void delete(Long animalId, Long userId);
+    void delete(Long animalId, String username);
 
     Animal getById(Long id);
 
-    List<Animal> getAllByUserId(Long userId);
+    List<Animal> getAllByUsername(String username);
 }

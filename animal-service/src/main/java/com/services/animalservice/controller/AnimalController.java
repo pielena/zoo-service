@@ -6,6 +6,7 @@ import com.services.animalservice.service.AnimalService;
 import com.services.animalservice.service.UserService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -33,8 +34,9 @@ public class AnimalController {
     @GetMapping
     public ResponseEntity<List <AnimalDto>> getAllAnimalsByUser() {
 
-        Long userId = 1L;
-        List<AnimalDto> result = animalService.getAllByUserId(userId).stream()
+        String username = (String) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+
+        List<AnimalDto> result = animalService.getAllByUsername(username).stream()
                 .map(AnimalDto::fromAnimal)
                 .collect(Collectors.toList());
         return new ResponseEntity<>(result, HttpStatus.OK);
@@ -51,25 +53,28 @@ public class AnimalController {
 
     @PostMapping
     public ResponseEntity<String> saveAnimal(@RequestBody AnimalDto animalDto) {
-        Long userId = 1L;
+
+        String username = (String) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         Animal animal = animalDto.toAnimal();
-        animalService.save(animal, userId);
+        animalService.save(animal, username);
         return new ResponseEntity<>("Animal is saved", HttpStatus.OK);
     }
 
     @PutMapping(value = "/{id}")
     public ResponseEntity<String> putAnimalById(@PathVariable Long id, @RequestBody AnimalDto animalDto) {
+
         Animal animal = animalDto.toAnimal();
         animal.setId(id);
-        Long userId = 1L;
-        animalService.update(animal, userId);
+        String username = (String) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        animalService.update(animal, username);
         return new ResponseEntity<>("Animal is updated", HttpStatus.OK);
     }
 
     @DeleteMapping(value = "/{id}")
     public ResponseEntity<String> deleteAnimalById(@PathVariable Long id) {
-        Long userId = 1L;
-        animalService.delete(id, userId);
+
+        String username = (String) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        animalService.delete(id, username);
         return new ResponseEntity<>("Animal is deleted", HttpStatus.OK);
     }
 }
