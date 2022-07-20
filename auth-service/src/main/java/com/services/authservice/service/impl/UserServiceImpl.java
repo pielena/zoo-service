@@ -53,7 +53,7 @@ public class UserServiceImpl implements UserService {
 
         int counter = attemptRepository.countFailAttempts(LocalDateTime.now().minus(expireTime, ChronoUnit.SECONDS), username);
         if (counter >= maxAttempts) {
-            throw new ResponseStatusException(HttpStatus.FORBIDDEN, "Too many attempts fro hour. Come back later!");
+            throw new ResponseStatusException(HttpStatus.FORBIDDEN, "Too many attempts for" + expireTime/60 + " minutes. Come back later!");
         }
 
         Optional<User> optionalUserEntity = userRepository.findByUsername(username);
