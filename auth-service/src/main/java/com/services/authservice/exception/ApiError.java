@@ -1,11 +1,13 @@
-package com.services.animalservice.exception;
+package com.services.authservice.exception;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
+import com.fasterxml.jackson.annotation.JsonInclude;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.time.LocalDateTime;
+import java.util.List;
 
 @Data
 @AllArgsConstructor
@@ -18,14 +20,19 @@ public class ApiError {
     private LocalDateTime timestamp = LocalDateTime.now();
 
     private String message;
+
+    @JsonInclude(JsonInclude.Include.NON_NULL)
     private String debugMessage;
 
-    static final ApiError INVALID_JWT_TOKEN = new ApiError(5, "Expired or invalid JWT token");
-    static final ApiError USERNAME_NOT_FOUND = new ApiError(6, "Username not found");
-    static final ApiError ANIMAL_BAD_REQUEST = new ApiError(8, "Incorrect request");
-    static final ApiError MESSAGE_NOT_READABLE = new ApiError(9, "Malformed JSON Request");
+    @JsonInclude(JsonInclude.Include.NON_NULL)
+    private List<String> errors;
+
+    static final ApiError INVALID_USERNAME_PASSWORD = new ApiError(1, "Invalid username/password supplied");
+    static final ApiError USERNAME_ALREADY_IN_USE = new ApiError(2, "Username is already in use");
+    static final ApiError TOO_MANY_SIGN_ATTEMPTS = new ApiError(3, "Too many sign attempts");
+    static final ApiError ARGUMENT_NOT_VALID = new ApiError(4, "Argument Not Valid");
     static final ApiError UNKNOWN_ERROR = new ApiError(7, "Something went wrong");
-    static final ApiError METHOD_ARGUMENT_TYPE_MISMATCH = new ApiError(10, "Argument type mismatch");
+    static final ApiError MESSAGE_NOT_READABLE = new ApiError(9, "Malformed JSON Request");
     static final ApiError NO_HANDLER_FOUND = new ApiError(11, "No handler found");
 
     public ApiError(int errorCode, String message) {

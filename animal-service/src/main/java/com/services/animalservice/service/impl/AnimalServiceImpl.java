@@ -1,13 +1,12 @@
 package com.services.animalservice.service.impl;
 
+import com.services.animalservice.exception.AnimalServiceException;
 import com.services.animalservice.model.Animal;
 import com.services.animalservice.model.User;
 import com.services.animalservice.repository.AnimalRepository;
 import com.services.animalservice.service.AnimalService;
 import com.services.animalservice.service.UserService;
-import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
-import org.springframework.web.server.ResponseStatusException;
 
 import java.util.List;
 
@@ -29,14 +28,14 @@ public class AnimalServiceImpl implements AnimalService {
             animal.setUser(user);
             return animalRepository.save(animal);
         } else {
-            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Animal with name " + animal.getName() + " already exists");
+            throw new AnimalServiceException("Animal with name " + animal.getName() + " already exists");
         }
     }
 
     @Override
     public Animal update(Animal animal, String username) {
          Animal result = animalRepository.findById(animal.getId())
-                 .orElseThrow(() -> new ResponseStatusException(HttpStatus.BAD_REQUEST, "Animal with id " + animal.getId() + " doesn't exist"));
+                 .orElseThrow(() -> new AnimalServiceException("Animal with id " + animal.getId() + " doesn't exist"));
          if (result.getUser().getUsername().equals(username)) {
              result.setBirthday(animal.getBirthday());
              result.setAnimalType(animal.getAnimalType());
@@ -44,7 +43,7 @@ public class AnimalServiceImpl implements AnimalService {
              result.setName(animal.getName());
              animalRepository.save(result);
          }
-         else throw new ResponseStatusException(HttpStatus.FORBIDDEN, "It's not your animal, you can't change it");
+         else throw new AnimalServiceException("It's not your animal, you can't change it");
 
         return result;
     }
@@ -53,7 +52,7 @@ public class AnimalServiceImpl implements AnimalService {
     public void delete(Long animalId, String username) {
         Animal animal = getById(animalId);
         if (!animal.getUser().getUsername().equals(username)) {
-            throw new ResponseStatusException(HttpStatus.FORBIDDEN, "It's not your animal, you can't delete it");
+            throw new AnimalServiceException("It's not your animal, you can't delete it");
         }
         User user = userService.getUserByUsername(username);
         Long userId = user.getId();
@@ -63,7 +62,7 @@ public class AnimalServiceImpl implements AnimalService {
     @Override
     public Animal getById(Long animalId) {
         return animalRepository.findById(animalId)
-                .orElseThrow(() -> new ResponseStatusException(HttpStatus.BAD_REQUEST, "Animal with id " + animalId + " doesn't exist"));
+                .orElseThrow(() -> new AnimalServiceException("Animal with id " + animalId + " doesn't exist"));
     }
 
     @Override

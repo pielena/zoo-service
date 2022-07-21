@@ -1,10 +1,10 @@
 package com.services.animalservice.security;
 
 import com.auth0.jwt.exceptions.JWTVerificationException;
+import com.services.animalservice.exception.InvalidTokenException;
 import org.springframework.http.HttpHeaders;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Component;
 import org.springframework.web.filter.OncePerRequestFilter;
 
@@ -19,11 +19,11 @@ import java.util.Collections;
 public class JwtFilter extends OncePerRequestFilter {
 
     private final JwtUtil jwtUtil;
-    private final JwtUserDetailsService jwtUserDetailsService;
+//    private final JwtUserDetailsService jwtUserDetailsService;
 
-    public JwtFilter(JwtUtil jwtUtil, JwtUserDetailsService jwtUserDetailsService) {
+
+    public JwtFilter(JwtUtil jwtUtil) {
         this.jwtUtil = jwtUtil;
-        this.jwtUserDetailsService = jwtUserDetailsService;
     }
 
     @Override
@@ -34,12 +34,11 @@ public class JwtFilter extends OncePerRequestFilter {
         if (authHeader != null && !authHeader.isBlank() && authHeader.startsWith("Bearer ")) {
             String jwt = authHeader.substring(7);
             if (jwt == null || jwt.isBlank()) {
-                response.sendError(HttpServletResponse.SC_BAD_REQUEST, "Invalid JWT Token in Bearer Header");
+                throw new InvalidTokenException("Invalid JWT Token in Bearer Header");
+//                response.sendError(HttpServletResponse.SC_BAD_REQUEST, "Invalid JWT Token in Bearer Header");
             } else {
                 try {
                     String username = jwtUtil.validateTokenAndRetrieveSubject(jwt);
-
-                    UserDetails userDetails = jwtUserDetailsService.loadUserByUsername(username);
 
                     UsernamePasswordAuthenticationToken authToken =
                             new UsernamePasswordAuthenticationToken(username, null, Collections.emptyList());
@@ -49,7 +48,8 @@ public class JwtFilter extends OncePerRequestFilter {
                     }
                 } catch (JWTVerificationException exc) {
 
-                    response.sendError(HttpServletResponse.SC_BAD_REQUEST, "Invalid JWT Token");
+                    throw new InvalidTokenException("Invalid JWT Token");
+//                    response.sendError(HttpServletResponse.SC_BAD_REQUEST, "Invalid JWT Token");
                 }
             }
         }
