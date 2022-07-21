@@ -1,5 +1,6 @@
 package com.services.animalservice.dto;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.services.animalservice.model.Animal;
 import com.services.animalservice.model.AnimalSex;
 import com.services.animalservice.model.AnimalType;
@@ -8,7 +9,7 @@ import lombok.Data;
 import java.time.LocalDate;
 
 @Data
-//@JsonIgnoreProperties(ignoreUnknown = true)
+@JsonIgnoreProperties(ignoreUnknown = true)
 public class AnimalDto {
 
         private Long id;

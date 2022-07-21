@@ -52,22 +52,22 @@ public class AnimalController {
     }
 
     @PostMapping
-    public ResponseEntity<String> saveAnimal(@RequestBody AnimalDto animalDto) {
+    public ResponseEntity<AnimalDto> saveAnimal(@RequestBody AnimalDto animalDto) {
 
         String username = (String) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         Animal animal = animalDto.toAnimal();
-        animalService.save(animal, username);
-        return new ResponseEntity<>("Animal is saved", HttpStatus.OK);
+        Animal result = animalService.save(animal, username);
+        return new ResponseEntity<>(AnimalDto.fromAnimal(result), HttpStatus.OK);
     }
 
     @PutMapping(value = "/{id}")
-    public ResponseEntity<String> putAnimalById(@PathVariable Long id, @RequestBody AnimalDto animalDto) {
+    public ResponseEntity<AnimalDto> putAnimalById(@PathVariable Long id, @RequestBody AnimalDto animalDto) {
 
         Animal animal = animalDto.toAnimal();
         animal.setId(id);
         String username = (String) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-        animalService.update(animal, username);
-        return new ResponseEntity<>("Animal is updated", HttpStatus.OK);
+        Animal result = animalService.update(animal, username);
+        return new ResponseEntity<>(AnimalDto.fromAnimal(result), HttpStatus.OK);
     }
 
     @DeleteMapping(value = "/{id}")

@@ -1,19 +1,16 @@
 package com.services.authservice.controller;
 
-import com.services.authservice.dto.ErrorResponse;
 import com.services.authservice.dto.TokenResponse;
 import com.services.authservice.dto.UserDto;
-import com.services.authservice.exception.LoginException;
-import com.services.authservice.exception.RegistrationException;
 import com.services.authservice.service.TokenService;
 import com.services.authservice.service.UserService;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+
+import javax.validation.Valid;
 
 @RestController
 @RequestMapping("/auth")
@@ -28,7 +25,7 @@ public class AuthController {
     }
 
     @PostMapping
-    public ResponseEntity<String> register(@RequestBody UserDto userDto) {
+    public ResponseEntity<String> register(@Valid @RequestBody UserDto userDto) {
         userService.register(userDto.getUsername(), userDto.getUserSecret());
         return ResponseEntity.ok("Successful registered. Go ahead!");
     }
@@ -39,10 +36,10 @@ public class AuthController {
         return new TokenResponse(tokenService.generateToken(userDto.getUsername()));
     }
 
-    @ExceptionHandler({RegistrationException.class, LoginException.class})
-    public ResponseEntity<ErrorResponse> handleUserRegistrationException(RuntimeException ex) {
-        return ResponseEntity
-                .badRequest()
-                .body(new ErrorResponse(HttpStatus.BAD_REQUEST, ex.getMessage()));
-    }
+//    @ExceptionHandler({RegistrationException.class, LoginException.class})
+//    public ResponseEntity<ErrorResponse> handleUserRegistrationException(RuntimeException ex) {
+//        return ResponseEntity
+//                .badRequest()
+//                .body(new ErrorResponse(HttpStatus.BAD_REQUEST, ex.getMessage()));
+//    }
 }
