@@ -20,7 +20,6 @@ public class ApiError {
     private String message;
     private String debugMessage;
 
-    static final ApiError INVALID_JWT_TOKEN = new ApiError(5, "Expired or invalid JWT token");
     static final ApiError USERNAME_NOT_FOUND = new ApiError(6, "Username not found");
     static final ApiError ANIMAL_BAD_REQUEST = new ApiError(8, "Incorrect request");
     static final ApiError MESSAGE_NOT_READABLE = new ApiError(9, "Malformed JSON Request");

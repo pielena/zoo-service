@@ -35,7 +35,6 @@ public class AnimalController {
     public ResponseEntity<List <AnimalDto>> getAllAnimalsByUser() {
 
         String username = (String) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-
         List<AnimalDto> result = animalService.getAllByUsername(username).stream()
                 .map(AnimalDto::fromAnimal)
                 .collect(Collectors.toList());
@@ -45,6 +44,8 @@ public class AnimalController {
     @GetMapping(value = "/{id}")
     public ResponseEntity<AnimalDto> getAnimalById(@PathVariable(name = "id") Long id) {
 
+        String username = (String) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        userService.getUserByUsername(username);
         Animal animal = animalService.getById(id);
         AnimalDto result = AnimalDto.fromAnimal(animal);
 

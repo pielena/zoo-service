@@ -1,11 +1,5 @@
 CREATE DATABASE zoo;
 
--- CREATE USER caretaker WITH PASSWORD 'caretaker';
---
--- GRANT ALL PRIVILEGES ON DATABASE zoo TO caretaker;
--- GRANT ALL PRIVILEGES ON SCHEMA public TO caretaker;
--- GRANT ALL PRIVILEGES ON ALL TABLES IN SCHEMA public TO caretaker;
-
 DROP TABLE IF EXISTS zoo.public.animals;
 DROP TABLE IF EXISTS zoo.public.attempts;
 DROP TABLE IF EXISTS zoo.public.users;

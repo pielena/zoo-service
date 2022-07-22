@@ -38,7 +38,7 @@ public class UserServiceImpl implements UserService {
     @Override
     public void register(String username, String userSecret) {
 
-        if(userRepository.findByUsername(username).isPresent()) {
+        if (userRepository.findByUsername(username).isPresent()) {
             throw new RegistrationException("User with name " + username + " already registered");
         }
 
@@ -54,7 +54,7 @@ public class UserServiceImpl implements UserService {
 
         int counter = attemptRepository.countFailAttempts(LocalDateTime.now().minus(expireTime, ChronoUnit.SECONDS), username);
         if (counter >= maxAttempts) {
-            throw new AttemptsLimitException("Too many attempts for " + expireTime/60 + " minutes. Come back later!");
+            throw new AttemptsLimitException("Too many attempts for " + expireTime / 60 + " minutes. Come back later!");
         }
 
         Optional<User> optionalUserEntity = userRepository.findByUsername(username);
@@ -73,9 +73,15 @@ public class UserServiceImpl implements UserService {
             attemptRepository.save(attempt);
 
             throw new LoginException("Password is incorrect");
-        }
-        else {
+        } else {
             attemptRepository.deleteAttemptsByUsername(username);
+        }
+    }
+
+    @Override
+    public void checkUsername(String username) {
+        if (userRepository.findByUsername(username).isPresent()) {
+            throw new RegistrationException("User with name " + username + " already registered");
         }
     }
 }

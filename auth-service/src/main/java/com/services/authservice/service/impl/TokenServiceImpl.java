@@ -21,7 +21,7 @@ public class TokenServiceImpl implements TokenService {
         Algorithm algorithm = Algorithm.HMAC256(secretKey);
 
         Instant now = Instant.now();
-        Instant exp = now.plus(500000, ChronoUnit.MINUTES);
+        Instant exp = now.plus(15, ChronoUnit.MINUTES);
 
         return JWT.create()
                 .withIssuer("auth-service")
