@@ -60,7 +60,15 @@ This project consists of three services:
 
     http://localhost/check 
    
-    POST request with username as TEXT in its body
+    POST request with username as JSON in its body like this: 
+
+   {
+
+   "username":"us"
+
+   }
+
+    (On this request you'll get an error message because the username is invalid)
 
 
 4. For CRUD operations you need to add to your requests the Authorization header with Type Bearer and the token you got earlier.
