@@ -1,7 +1,6 @@
 package com.services.animalservice.security;
 
 import com.auth0.jwt.exceptions.JWTVerificationException;
-import com.services.animalservice.exception.InvalidTokenException;
 import org.springframework.http.HttpHeaders;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -34,8 +33,8 @@ public class JwtFilter extends OncePerRequestFilter {
         if (authHeader != null && !authHeader.isBlank() && authHeader.startsWith("Bearer ")) {
             String jwt = authHeader.substring(7);
             if (jwt == null || jwt.isBlank()) {
-                throw new InvalidTokenException("Invalid JWT Token in Bearer Header");
-//                response.sendError(HttpServletResponse.SC_BAD_REQUEST, "Invalid JWT Token in Bearer Header");
+//                throw new InvalidTokenException("Invalid JWT Token in Bearer Header");
+                response.sendError(HttpServletResponse.SC_BAD_REQUEST, "Invalid JWT Token in Bearer Header");
             } else {
                 try {
                     String username = jwtUtil.validateTokenAndRetrieveSubject(jwt);
@@ -48,8 +47,8 @@ public class JwtFilter extends OncePerRequestFilter {
                     }
                 } catch (JWTVerificationException exc) {
 
-                    throw new InvalidTokenException("Invalid JWT Token");
-//                    response.sendError(HttpServletResponse.SC_BAD_REQUEST, "Invalid JWT Token");
+//                    throw new InvalidTokenException("Invalid JWT Token");
+                    response.sendError(HttpServletResponse.SC_BAD_REQUEST, "Invalid JWT Token");
                 }
             }
         }
