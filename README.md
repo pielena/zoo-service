@@ -19,7 +19,7 @@ This project consists of three services:
 - You need to have Maven and JDK11+. The best way to run the project is with IDE like IntelliJ IDEA.
 - Clone project from GitHub
 - You need specify the correct database settings in application.properties in animal-service and auth-service modules
-- Run sql scripts in animal-service module
+- Run sql script in animal-service module
 - Run all services
 - Open Postman for sending requests
 
@@ -53,7 +53,7 @@ This project consists of three services:
     Send a request with JSON body "username", "userSecret". 
     
     You will receive a token in return, if you are already registered. 
-    If userSecret is wrong, you'll get an error message. You have 10 fail attempts to log in per hour (you can change max-tries and ban-time in application.properties in auth-service module).
+    If userSecret is wrong, you'll get an error message. You have 10 fail attempts in a row to log in per hour (you can change max-tries and ban-time in application.properties in auth-service module).
 
 
 3. For CRUD operations you need to add to your requests the Authorization header with Type Bearer and the token you got earlier.

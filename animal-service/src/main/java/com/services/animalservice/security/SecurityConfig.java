@@ -1,6 +1,5 @@
 package com.services.animalservice.security;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -18,11 +17,13 @@ import javax.servlet.http.HttpServletResponse;
 @EnableGlobalMethodSecurity(prePostEnabled = true)
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
-    @Autowired
-    private JwtUserDetailsService jwtUserDetailsService;
+    private final JwtUserDetailsService jwtUserDetailsService;
+    private final JwtFilter jwtFilter;
 
-    @Autowired
-    private JwtFilter jwtFilter;
+    public SecurityConfig(JwtUserDetailsService jwtUserDetailsService, JwtFilter jwtFilter) {
+        this.jwtUserDetailsService = jwtUserDetailsService;
+        this.jwtFilter = jwtFilter;
+    }
 
     @Override
     protected void configure(HttpSecurity http) throws Exception {

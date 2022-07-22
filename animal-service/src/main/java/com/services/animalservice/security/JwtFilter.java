@@ -18,8 +18,6 @@ import java.util.Collections;
 public class JwtFilter extends OncePerRequestFilter {
 
     private final JwtUtil jwtUtil;
-//    private final JwtUserDetailsService jwtUserDetailsService;
-
 
     public JwtFilter(JwtUtil jwtUtil) {
         this.jwtUtil = jwtUtil;
@@ -33,7 +31,6 @@ public class JwtFilter extends OncePerRequestFilter {
         if (authHeader != null && !authHeader.isBlank() && authHeader.startsWith("Bearer ")) {
             String jwt = authHeader.substring(7);
             if (jwt == null || jwt.isBlank()) {
-//                throw new InvalidTokenException("Invalid JWT Token in Bearer Header");
                 response.sendError(HttpServletResponse.SC_BAD_REQUEST, "Invalid JWT Token in Bearer Header");
             } else {
                 try {
@@ -46,8 +43,6 @@ public class JwtFilter extends OncePerRequestFilter {
                         SecurityContextHolder.getContext().setAuthentication(authToken);
                     }
                 } catch (JWTVerificationException exc) {
-
-//                    throw new InvalidTokenException("Invalid JWT Token");
                     response.sendError(HttpServletResponse.SC_BAD_REQUEST, "Invalid JWT Token");
                 }
             }

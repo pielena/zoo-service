@@ -15,7 +15,6 @@ import org.springframework.web.servlet.NoHandlerFoundException;
 import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExceptionHandler;
 
 import static com.services.animalservice.exception.ApiError.ANIMAL_BAD_REQUEST;
-import static com.services.animalservice.exception.ApiError.INVALID_JWT_TOKEN;
 import static com.services.animalservice.exception.ApiError.MESSAGE_NOT_READABLE;
 import static com.services.animalservice.exception.ApiError.METHOD_ARGUMENT_TYPE_MISMATCH;
 import static com.services.animalservice.exception.ApiError.NO_HANDLER_FOUND;
@@ -24,21 +23,14 @@ import static com.services.animalservice.exception.ApiError.USERNAME_NOT_FOUND;
 import static org.springframework.http.HttpStatus.BAD_REQUEST;
 import static org.springframework.http.HttpStatus.INTERNAL_SERVER_ERROR;
 import static org.springframework.http.HttpStatus.NOT_FOUND;
-import static org.springframework.http.HttpStatus.UNAUTHORIZED;
 
 @Order(Ordered.HIGHEST_PRECEDENCE)
 @RestControllerAdvice
 public class ErrorHandler extends ResponseEntityExceptionHandler {
 
-    @ExceptionHandler(InvalidTokenException.class)
-    ResponseEntity<Object> handleInvalidTokenException(InvalidTokenException ex, WebRequest request) {
-        INVALID_JWT_TOKEN.setDebugMessage(ex.getMessage());
-        return new ResponseEntity<>(INVALID_JWT_TOKEN, UNAUTHORIZED);
-    }
-
     @ExceptionHandler(UsernameNotFoundException.class)
     ResponseEntity<Object> handleUsernameNotFoundException(UsernameNotFoundException ex, WebRequest request) {
-        INVALID_JWT_TOKEN.setDebugMessage(ex.getMessage());
+        USERNAME_NOT_FOUND.setDebugMessage(ex.getMessage());
         return new ResponseEntity<>(USERNAME_NOT_FOUND, NOT_FOUND);
     }
 
