@@ -4,6 +4,7 @@ import com.services.authservice.dto.TokenResponse;
 import com.services.authservice.dto.UserDto;
 import com.services.authservice.service.TokenService;
 import com.services.authservice.service.UserService;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -39,6 +40,9 @@ public class AuthController {
     @PostMapping("/check")
     public ResponseEntity<String> checkUsername(@RequestBody String username) {
         userService.checkUsername(username);
+        if (username.length()<4) {
+            return new ResponseEntity<>("Minimum username length: 4 characters", HttpStatus.BAD_REQUEST);
+        }
         return ResponseEntity.ok("This username is free");
     }
 }
