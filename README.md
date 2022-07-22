@@ -56,7 +56,14 @@ This project consists of three services:
     If userSecret is wrong, you'll get an error message. You have 10 fail attempts in a row to log in per hour (you can change max-tries and ban-time in application.properties in auth-service module).
 
 
-3. For CRUD operations you need to add to your requests the Authorization header with Type Bearer and the token you got earlier.
+3. Check if username is already in use (without registration)
+
+    http://localhost/check 
+   
+    POST request with username as TEXT in its body
+
+
+4. For CRUD operations you need to add to your requests the Authorization header with Type Bearer and the token you got earlier.
 
 
 
