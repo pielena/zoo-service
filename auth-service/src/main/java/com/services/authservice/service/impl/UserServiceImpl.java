@@ -11,14 +11,16 @@ import com.services.authservice.service.UserService;
 import org.mindrot.jbcrypt.BCrypt;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
-import org.springframework.validation.annotation.Validated;
 
 import java.time.LocalDateTime;
 import java.time.temporal.ChronoUnit;
-import java.util.Optional;
+
+import static com.services.authservice.exception.ExceptionMessageConstant.PASSWORD_INCORRECT_MESSAGE;
+import static com.services.authservice.exception.ExceptionMessageConstant.TOO_MANY_SIGN_ATTEMPTS_MESSAGE;
+import static com.services.authservice.exception.ExceptionMessageConstant.USERNAME_ALREADY_IN_USE_MESSAGE;
+import static com.services.authservice.exception.ExceptionMessageConstant.USERNAME_NOT_FOUND_MESSAGE;
 
 @Service
-@Validated
 public class UserServiceImpl implements UserService {
 
     private final UserRepository userRepository;
@@ -39,7 +41,7 @@ public class UserServiceImpl implements UserService {
     public void register(String username, String userSecret) {
 
         if (userRepository.findByUsername(username).isPresent()) {
-            throw new RegistrationException("User with name " + username + " already registered");
+            throw new RegistrationException(String.format(USERNAME_ALREADY_IN_USE_MESSAGE, username));
         }
 
         String hash = BCrypt.hashpw(userSecret, BCrypt.gensalt());
@@ -54,16 +56,10 @@ public class UserServiceImpl implements UserService {
 
         int counter = attemptRepository.countFailAttempts(LocalDateTime.now().minus(expireTime, ChronoUnit.SECONDS), username);
         if (counter >= maxAttempts) {
-            throw new AttemptsLimitException("Too many attempts for " + expireTime / 60 + " minutes. Come back later!");
+            throw new AttemptsLimitException(String.format(TOO_MANY_SIGN_ATTEMPTS_MESSAGE, expireTime / 60));
         }
 
-        Optional<User> optionalUserEntity = userRepository.findByUsername(username);
-
-        if (optionalUserEntity.isEmpty()) {
-            throw new LoginException("User with name " + username + " not found");
-        }
-
-        User user = optionalUserEntity.get();
+        User user = userRepository.findByUsername(username).orElseThrow(() -> new LoginException(String.format(USERNAME_NOT_FOUND_MESSAGE, username)));
 
         if (!BCrypt.checkpw(userSecret, user.getHash())) {
             Attempt attempt = new Attempt();
@@ -72,7 +68,7 @@ public class UserServiceImpl implements UserService {
             attempt.setCreationDateTime(creationDateTime);
             attemptRepository.save(attempt);
 
-            throw new LoginException("Password is incorrect");
+            throw new LoginException(PASSWORD_INCORRECT_MESSAGE);
         } else {
             attemptRepository.deleteAttemptsByUsername(username);
         }
@@ -81,7 +77,7 @@ public class UserServiceImpl implements UserService {
     @Override
     public void checkUsername(String username) {
         if (userRepository.findByUsername(username).isPresent()) {
-            throw new RegistrationException("User with name " + username + " already registered");
+            throw new RegistrationException(String.format(USERNAME_ALREADY_IN_USE_MESSAGE, username));
         }
     }
 }
