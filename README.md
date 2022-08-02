@@ -41,7 +41,7 @@ This project consists of three services:
 
    You will receive a token in return.
 
-    Note that the username must be at least 4 characters and the userSecret must be at least 8 characters, or you get an error message.
+    Note that the username must be at least 4 characters and the userSecret must be at least 8 characters, or you'll get an error message.
 
     The username must be unique, so you can get an error message if this username has been already registered.
     
