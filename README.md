@@ -1,4 +1,4 @@
-# Security-CRUD-Gateway services
+# Zoo-service
 
 This project consists of three services:
 
