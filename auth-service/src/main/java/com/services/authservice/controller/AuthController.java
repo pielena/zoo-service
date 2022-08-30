@@ -39,6 +39,6 @@ public class AuthController {
     @PostMapping("/check")
     public ResponseEntity<String> checkUsername(@Valid @RequestBody UserDto userDto) {
         userService.checkUsername(userDto.getUsername());
-        return ResponseEntity.ok("This username is free");
+        return ResponseEntity.ok("This username is available");
     }
 }
